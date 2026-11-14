@@ -1,24 +1,42 @@
-# TRIBE-local: Lightweight Multimodal Brain Encoding
+# TRIBE-local: In-Silico Multimodal Brain Encoding & Retention Studio
 
-[![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
-[![PyTorch 2.1+](https://img.shields.io/badge/PyTorch-2.1+-ee4c2c.svg)](https://pytorch.org/)
-[![PyTorch Lightning](https://img.shields.io/badge/Lightning-2.2+-792ee5.svg)](https://lightning.ai/)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![PyTorch 2.1+](https://img.shields.io/badge/PyTorch-2.1%2B-ee4c2c.svg)](https://pytorch.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg)](https://fastapi.tiangolo.com/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.30%2B-FF4B4B.svg)](https://streamlit.io/)
 [![Hardware Target](https://img.shields.io/badge/GPU-RTX%205060%20Ti%20(8GB)-76b900.svg)](https://www.nvidia.com/)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 
-> **Independent Research Implementation inspired by Meta TRIBE v2**  
+> **Modular Research Implementation inspired by Meta TRIBE v2**  
 > Based on architectural principles from: *"A Foundation Model of Vision, Audition, and Language for In-Silico Neuroscience"* (Meta AI, arXiv:2605.04326).  
-> *Note: This project is an independent adaptation re-engineered specifically for consumer GPUs (8GB VRAM) and does NOT claim original Meta TRIBE v2 accuracy without experimental validation. See [DEVIATIONS.md](DEVIATIONS.md) for full details.*
+> *Note: This project is an independent adaptation re-engineered specifically for consumer GPUs (8GB VRAM) and does NOT claim original Meta TRIBE v2 accuracy without experimental validation. See [DEVIATIONS.md](DEVIATIONS.md) for full architectural mappings.*
 
 ---
 
-## 1. Overview & System Architecture
+## 📑 Table of Contents
+1. [System Architecture](#1-system-architecture)
+2. [Hardware Requirements](#2-hardware-requirements)
+3. [Installation Guide](#3-installation-guide)
+   - [Option A: Native Windows (PowerShell)](#option-a-native-windows-powershell)
+   - [Option B: WSL2 Ubuntu 24.04 (Linux)](#option-b-wsl2-ubuntu-2404-linux)
+   - [Option C: Conda Environment](#option-c-conda-environment)
+4. [Environment Configuration (`.env`)](#4-environment-configuration)
+5. [Quick Run Reference Card](#5-quick-run-reference-card)
+6. [Streamlit Web Application](#6-streamlit-web-application)
+7. [FastAPI REST API Server](#7-fastapi-rest-api-server)
+8. [Model Context Protocol (MCP) Server](#8-model-context-protocol-mcp-server)
+9. [Timeline Engagement & Viral Script Analyzer](#9-timeline-engagement--viral-script-analyzer)
+10. [Hardware Profiling & VRAM Benchmark](#10-hardware-profiling--vram-benchmark)
+11. [Training Pipeline](#11-training-pipeline)
+12. [Evaluation & fMRI Validation](#12-evaluation--fmri-validation)
+13. [Directory Map](#13-directory-map)
+14. [Troubleshooting FAQ](#14-troubleshooting-faq)
 
-TRIBE-local is an end-to-end multimodal brain-encoding framework capable of predicting continuous human cortical BOLD responses (fMRI) from simultaneous video, audio, and language stimuli. 
+---
 
-While the original Meta TRIBE v2 required an 80GB enterprise GPU cluster, TRIBE-local replaces all heavyweight foundation backbones with high-efficiency, GPU-compatible alternatives optimized for a **single NVIDIA GeForce RTX 5060 Ti (8GB VRAM)** on **Windows 11 + WSL2 Ubuntu 24.04**.
+## 1. System Architecture
 
-### Architecture Data Flow
+TRIBE-local models human cortical fMRI responses across sensory and associative brain areas as a function of dynamic video, audio, and language inputs.
 
 ```
                       ┌────────────────────────────────────────┐
@@ -39,13 +57,13 @@ While the original Meta TRIBE v2 required an 80GB enterprise GPU cluster, TRIBE-
                                           ▼
                       ┌────────────────────────────────────────┐
                       │    TEMPORAL ALIGNMENT (Linear Interp)  │
-                      │    Aligns all streams to 2 Hz grid     │
+                      │    Interpolates all streams to 2 Hz    │
                       └───────────────────┬────────────────────┘
                                           │ all (B, D_m, T_common)
                                           ▼
                       ┌────────────────────────────────────────┐
                       │    MODALITY PROJECTORS (MLPs)          │
-                      │    Projects each to hidden // 3 = 170  │
+                      │    Projects to hidden // 3 = 170 each  │
                       │    Concatenates to: (B, T_common, 512) │
                       └───────────────────┬────────────────────┘
                                           │ (B, T, 512)
@@ -82,136 +100,272 @@ While the original Meta TRIBE v2 required an 80GB enterprise GPU cluster, TRIBE-
 
 ---
 
-## 2. Component Replacement Matrix
+## 2. Hardware Requirements
 
-| Component | Meta TRIBE v2 (Original) | TRIBE-local (Ours) | Parameters | VRAM Footprint |
-|:---|:---|:---|:---|:---|
-| **Video Encoder** | V-JEPA 2 ViT-Giant | **VideoMAE-Small** | ~22M | ~120 MB |
-| **Audio Encoder** | Wav2Vec-BERT 2.0 | **AST (Audio Spectrogram Transformer)** | ~86M | ~280 MB |
-| **Text Encoder** | LLaMA 3.2-3B | **DeepSeek API** *(fallback: all-MiniLM-L6-v2)* | 0M local *(22M)* | 0 MB *(~80 MB)* |
-| **Multimodal Fusion** | 8-layer Transformer (dim=1152) | **4-layer Cross-Attention Transformer (dim=512)** | ~18M | ~110 MB |
-| **Low-Rank Bottleneck** | `r = 2048` | **`r = 1024`** | ~0.5M | ~15 MB |
-| **Subject Head** | Monolithic matrix `(25, 2048, 20484)` = 4.2 GB | **Shared Linear + FiLM Style Embeddings** | ~21M | ~85 MB |
-| **Total Trainable** | ~1.1 Billion | **~40 Million** | **Fits in 8GB VRAM with ~7GB headroom!** |
+- **GPU:** NVIDIA GeForce RTX 5060 Ti (8GB VRAM) or equivalent Turing/Ampere/Ada GPU.
+- **VRAM Budget:** Model weights require only **~138 MB**, leaving **>7.8 GB VRAM headroom** for batching and feature activations.
+- **RAM:** Minimum 16GB (32GB recommended for large stimulus loading).
+- **OS:** Windows 11 / Windows 10, or WSL2 Ubuntu 24.04 / 22.04 LTS.
 
 ---
 
-## 3. Installation Guide (WSL2 Ubuntu 24.04 / Windows 11)
+## 3. Installation Guide
 
-### Prerequisites
-- Windows 11 with WSL2 enabled (`wsl --version`)
-- NVIDIA GPU Driver installed on Windows (NVIDIA CUDA pass-through enabled in WSL2)
-- Target: RTX 5060 Ti (8GB VRAM) and at least 16GB system RAM (32GB recommended)
+Choose one of the installation paths below based on your preferred environment.
 
-### Step 1: Clone Repository & Setup Environment
-In your WSL2 Ubuntu terminal:
+### Option A: Native Windows (PowerShell)
+
+Open PowerShell as Administrator or regular user and navigate to the project root:
+
+```powershell
+# 1. Navigate to the repository
+cd "D:\sakthivel workspace\Workspace\RnD\TRibev2"
+
+# 2. (Optional) Create and activate a virtual environment
+python -m venv venv
+.\venv\Scripts\Activate.ps1
+
+# 3. Upgrade pip
+python -m pip install --upgrade pip
+
+# 4. Install PyTorch with CUDA 12.1 (skip if already installed)
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+# 5. Install all project requirements
+pip install -r requirements.txt
+
+# 6. Install the web UI and API servers
+pip install streamlit fastapi uvicorn
+```
+
+### Option B: WSL2 Ubuntu 24.04 (Linux)
+
+In your WSL2 terminal:
 
 ```bash
-# Clone or navigate to the project
-cd /mnt/d/"sakthivel workspace"/Workspace/CRM/tribe_local
+# 1. Navigate to the Windows mount path
+cd /mnt/d/"sakthivel workspace"/Workspace/RnD/TRibev2
 
-# Run automated setup script
+# 2. Make setup script executable and run automated installer
 chmod +x scripts/setup_wsl.sh
 ./scripts/setup_wsl.sh
 ```
 
-Or manually using Conda:
+### Option C: Conda Environment
+
+If using Anaconda or Miniconda:
 
 ```bash
-# Create Conda environment
-conda create -n tribe_local python=3.11 -y
+cd "D:\sakthivel workspace\Workspace\RnD\TRibev2"
+
+# Create conda environment from environment.yml
+conda env create -f environment.yml
+
+# Activate environment
 conda activate tribe_local
-
-# Install PyTorch with CUDA 12.1
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-
-# Install requirements
-pip install -r requirements.txt
-pip install -e .
 ```
 
-### Step 2: Configure Environment Variables
-Copy `.env.example` to `.env` and provide your DeepSeek API key:
+---
+
+## 4. Environment Configuration
+
+Copy the example `.env` file and insert your API credentials:
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env`:
+Open `.env` in any text editor:
 ```ini
-DEEPSEEK_API_KEY=sk-your-actual-deepseek-api-key-here
+# DeepSeek API Key (Required for DeepSeek script generation and text embeddings)
+# Sign up at: https://platform.deepseek.com/
+DEEPSEEK_API_KEY=your_actual_deepseek_api_key_here
+
+# Local feature cache root (default: ~/.tribe_cache)
 TRIBE_CACHE_DIR=~/.tribe_cache
 ```
 
-*(If `DEEPSEEK_API_KEY` is not provided, the pipeline automatically falls back to local SentenceTransformers `all-MiniLM-L6-v2` with zero configuration required).*
+*(Note: If `DEEPSEEK_API_KEY` is not provided, the text encoder automatically falls back to local SentenceTransformers `all-MiniLM-L6-v2` with zero network dependency).*
 
 ---
 
-## 4. Quickstart & Testing
+## 5. Quick Run Reference Card
 
-### 1. Run Automated GPU Benchmark
-Profiles VRAM consumption, latency, and throughput on your RTX 5060 Ti:
+| Action | Exact Command to Run | Default Port / URL |
+|:---|:---|:---|
+| **Streamlit Web Studio** | `streamlit run ui/app.py --server.port 8501` | [http://localhost:8501](http://localhost:8501) |
+| **FastAPI REST Server** | `python -m uvicorn api.server:app --port 8000` | [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) |
+| **Model Context Protocol (MCP)** | `python -m mcp.server` | Stdio JSON-RPC 2.0 |
+| **Run Unit Tests (9/9)** | `python -m unittest tests/test_pipeline.py` | CLI Output (Pass/Fail) |
+| **Run GPU VRAM Benchmark** | `python -m evaluation.benchmark` | `benchmarks/benchmark_report.json` |
+| **fMRI Synthetic Validation** | `python -m evaluation.validate_fmri` | `validation_results/validation_report.json` |
+| **Timeline Engagement Analyzer** | `python -m evaluation.timeline_analyzer --text "Script..."` | CLI ASCII Chart + JSON |
+| **Train Voxel-Mode Model** | `python -m training.train --config configs/local_config.yaml --mode voxel` | Checkpoints in `checkpoints/` |
+| **Train ROI-Mode Model** | `python -m training.train --config configs/roi_config.yaml --mode roi` | Checkpoints in `checkpoints_roi/` |
 
+---
+
+## 6. Streamlit Web Application
+
+The interactive web dashboard provides script generation, real-time engagement graphs, peak/drop diagnostics, and 3D brain surface mapping.
+
+### Launch Command:
 ```bash
-python -m tribe_local.evaluation.benchmark --output-dir benchmarks
+streamlit run ui/app.py --server.port 8501
 ```
 
-Expected output:
-```
-============================================================================
-  TRIBE-LOCAL BENCHMARK SUMMARY (Target: RTX 5060 Ti 8GB VRAM)
-============================================================================
-Device: NVIDIA GeForce RTX 5060 Ti | FP16: True
-----------------------------------------------------------------------------
-Component                  | Total Params | Peak VRAM (MB) | Latency (ms)  
-----------------------------------------------------------------------------
-fusion                     | 18,378,752   | 112.4          | 12.8          
-voxel_head                 | 21,012,388   | 84.6           | 6.2           
-roi_head                   | 378,280      | 8.1            | 1.8           
-integrated_pipeline        | 39,391,140   | 197.0          | 19.0          
-----------------------------------------------------------------------------
-8GB VRAM Budget Status: PASS (Fits comfortably in 8GB) (Headroom: 7995.0 MB)
-============================================================================
-```
+### Features:
+1. **Viral Script & Retention Analyzer:**
+   - Type any topic (e.g., *"The AI Bubble"*) or click **"Generate with DeepSeek"**.
+   - Generates a 45–60s video script with timestamps, B-roll, voiceover text, and captions.
+   - Computes second-by-second viewer cognitive engagement scores `[0 - 100]`.
+   - Identifies **Hook Strength (0–3s)**, **Climax Engagement**, and **End-screen Loop Retention**.
+   - Displays color-coded cards for **High Peaks** (audiences glued) and **Drop-off Risks** (pacing lulls).
+2. **Multimodal Cortical BOLD Prediction:**
+   - Upload video clips (`.mp4`) or audio files (`.wav`), or type text descriptions.
+   - Predicts cortical responses across **360 HCP-MMP1 parcels** (ROI mode) or **20,484 vertices** (Voxel mode).
+3. **Hardware & VRAM Monitor:**
+   - Real-time RTX 5060 Ti memory profiling and parameter breakdown.
 
-### 2. Run Synthetic fMRI Validation
-Validates Pearson correlation, R² score, and ROI parcellation mapping against synthetic ground truth:
+---
 
+## 7. FastAPI REST API Server
+
+A production-grade REST API server for programmatic brain prediction and retention scoring.
+
+### Launch Command:
 ```bash
-python -m tribe_local.evaluation.validate_fmri --output-dir validation_results
+python -m uvicorn api.server:app --host 127.0.0.1 --port 8000 --reload
+```
+Interactive Swagger / OpenAPI docs: **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
+
+### Key Endpoints:
+
+#### 1. Health Check
+```bash
+curl -X GET "http://127.0.0.1:8000/api/v1/health"
+```
+**Response:**
+```json
+{
+  "status": "healthy",
+  "service": "tribe_local_api",
+  "target_hardware": "NVIDIA GeForce RTX 5060 Ti (8GB VRAM)",
+  "cuda_available": true,
+  "deepseek_configured": true
+}
+```
+
+#### 2. Timeline Engagement Scoring
+```bash
+curl -X POST "http://127.0.0.1:8000/api/v1/engagement" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "text": "Is AI the next dot com crash? Billions spent on chips, but the revenue is not matching the hype.",
+       "duration_secs": 30.0
+     }'
+```
+
+#### 3. DeepSeek Script Generation + Instant Retention Scoring
+```bash
+curl -X POST "http://127.0.0.1:8000/api/v1/generate-script" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "topic": "The AI Bubble",
+       "duration_secs": 55,
+       "style": "Urgent, fast-paced, high retention"
+     }'
 ```
 
 ---
 
-## 5. Training Guide
+## 8. Model Context Protocol (MCP) Server
 
-### Pre-Extract Stimulus Features (Recommended)
-Pre-extracting features to disk eliminates redundant forward passes through the frozen vision and audio encoders during training, maximizing GPU throughput:
+Integrate TRIBE-local directly with **Claude Desktop**, **Antigravity**, **Cursor**, or any MCP-compatible agent.
+
+### Launch Command:
+```bash
+python -m mcp.server
+```
+
+### Claude Desktop Configuration:
+Add the following block to your `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "tribe-local": {
+      "command": "python",
+      "args": ["-m", "mcp.server"],
+      "cwd": "D:\\sakthivel workspace\\Workspace\\RnD\\TRibev2"
+    }
+  }
+}
+```
+
+### Available MCP Tools:
+- **`tribe_predict_brain`**: Predicts cortical BOLD activity from multimodal stimulus.
+- **`tribe_analyze_engagement`**: Computes timeline engagement curves, hook strength, and pacing drop risks.
+- **`tribe_generate_viral_script`**: Generates viral scripts via DeepSeek and evaluates cognitive engagement in one pass.
+- **`tribe_get_system_status`**: Queries RTX 5060 Ti memory and VRAM headroom.
+
+---
+
+## 9. Timeline Engagement & Viral Script Analyzer
+
+Run timeline pacing diagnostics directly from the command line:
+
+```bash
+python -m evaluation.timeline_analyzer \
+    --config configs/roi_config.yaml \
+    --text "Is AI the next dot com crash? Everyone is screaming AI is the future. We are spending billions on GPUs, but the revenue is not matching the hype. History does not repeat, but it rhymes. In 2000, it was dot-com websites. Today, it is thousands of AI wrapper apps. When the hype cools down, the costs remain. If ROI does not show up, the bubble pops. Nvidia is printing money by selling shovels. But the miners buying shovels might be digging their own graves. Is AI a revolution, or history's biggest rug pull?" \
+    --duration 55.0 \
+    --output timeline_report.json
+```
+
+---
+
+## 10. Hardware Profiling & VRAM Benchmark
+
+Benchmark memory consumption and forward latency across all components:
+
+```bash
+python -m evaluation.benchmark --output-dir benchmarks
+```
+
+### Measured Performance on RTX 5060 Ti:
+
+| Subsystem | Total Parameters | Model Weight Size | Forward Latency | 8GB Budget Status |
+|:---|:---|:---|:---|:---|
+| **`fusion`** | 13,075,459 | ~52 MB | 22.7 ms | **PASS** (<120 MB VRAM) |
+| **`voxel_head`** (20,484 vertices) | 21,648,612 | ~86 MB | 26.3 ms | **PASS** (<90 MB VRAM) |
+| **`roi_head`** (360 parcels) | 378,000 | ~1.5 MB | 0.6 ms | **PASS** (<10 MB VRAM) |
+| **`integrated_pipeline`** | **34,724,071** | **~138 MB** | **47.6 ms** | **PASS (Headroom: >7.8 GB)** |
+
+---
+
+## 11. Training Pipeline
+
+### Step 1: Pre-Extract Stimulus Features (Recommended)
+Pre-extracting features to disk eliminates redundant forward passes through the frozen vision and audio encoders during training:
 
 ```bash
 python scripts/extract_features.py --data-root data/my_dataset --modalities video audio text
 ```
 
-### Train Voxel-Mode Model (20,484 Cortical Vertices)
-Trains the lightweight cross-attention transformer and vertex-level subject head:
-
+### Step 2: Train Voxel-Mode Model (20,484 Vertices)
 ```bash
-python -m tribe_local.training.train \
+python -m training.train \
     --config configs/local_config.yaml \
-    --data-root data/my_dataset \
     --mode voxel \
     --batch-size 1 \
     --fp16 \
     --max-epochs 15
 ```
 
-### Train ROI-Mode Model (360 HCP-MMP1 Parcels)
-For ultra-fast experimentation or smaller GPUs:
-
+### Step 3: Train ROI-Mode Model (360 Parcels)
 ```bash
-python -m tribe_local.training.train \
+python -m training.train \
     --config configs/roi_config.yaml \
-    --data-root data/my_dataset \
     --mode roi \
     --batch-size 2 \
     --fp16 \
@@ -220,137 +374,105 @@ python -m tribe_local.training.train \
 
 ---
 
-## 6. Inference API
+## 12. Evaluation & fMRI Validation
 
-### Command Line Interface
+Run the automated evaluation suite to compute Pearson correlation, R² score, and Top-1 retrieval accuracy against synthetic or empirical fMRI datasets:
 
 ```bash
-python -m tribe_local.evaluation.inference \
-    --config configs/local_config.yaml \
-    --checkpoint checkpoints/best_model.ckpt \
-    --video sample_stimuli/clip.mp4 \
-    --audio sample_stimuli/clip.wav \
-    --text "A person is walking down the street." \
-    --subject-id 0 \
-    --output predicted_bold.npy
-```
-
-### Python API
-
-```python
-from tribe_local.evaluation.inference import TribeLocalPredictor
-import yaml
-
-with open("configs/local_config.yaml", "r") as f:
-    cfg = yaml.safe_load(f)
-
-predictor = TribeLocalPredictor(
-    config=cfg,
-    checkpoint_path="checkpoints/best_model.ckpt",
-    device="cuda",
-    fp16=True,
-)
-
-# Run inference on any multimodal input
-result = predictor.predict(
-    video_path="stimulus.mp4",
-    audio_path="stimulus.wav",
-    text_input="Dialogue transcribed from scene",
-    subject_id=0,
-)
-
-print("Predicted fMRI shape:", result["predicted_bold"].shape)  # (20484, 100)
-print("Inference latency:", result["latency_ms"], "ms")
+python -m evaluation.validate_fmri --output-dir validation_results
 ```
 
 ---
 
-## 7. Streamlit Web UI, REST API & MCP Server
+## 13. Directory Map
 
-### A. Streamlit Interactive Web Studio
-Launch the full interactive dashboard for script generation, real-time engagement graphs, peak/drop diagnostics, and brain surface mapping:
-
-```bash
-streamlit run tribe_local/ui/app.py
 ```
-Open your browser at `http://localhost:8501`. Features include:
-- **Viral Script & Retention Analyzer:** Enter any topic or click *"Generate with DeepSeek"* to craft high-retention scripts, and view second-by-second engagement graphs, hook ratings, and drop-off risks.
-- **Multimodal Cortical Predictor:** Upload video/audio clips and predict cortical fMRI activity in real time.
-- **Hardware & VRAM Monitor:** Live RTX 5060 Ti memory profiling.
+TRibev2/
+├── README.md                      # Authoritative user guide & API reference
+├── DEVIATIONS.md                  # Comprehensive architectural mapping & deviations record
+├── environment.yml                # Conda environment definition
+├── requirements.txt               # Pip dependencies
+├── setup.py                       # Python package configuration
+├── .env                           # Secret environment variables (DEEPSEEK_API_KEY)
+├── .env.example                   # Environment configuration template
+├── .gitignore                     # Git ignore rules
+│
+├── configs/
+│   ├── local_config.yaml          # Voxel-mode config (20,484 vertices, FP16, batch size 1)
+│   └── roi_config.yaml            # ROI-mode config (360 parcels, batch size 2)
+│
+├── encoders/
+│   ├── video_encoder.py           # VideoMAE-Small encoder & 2Hz feature extractor
+│   ├── audio_encoder.py           # AST Audio Spectrogram Transformer & Mel-processor
+│   └── text_encoder.py            # DeepSeek API client with exponential backoff & MiniLM fallback
+│
+├── fusion/
+│   ├── temporal_align.py          # Temporal interpolation to 2Hz + 5s HRF offset
+│   ├── projectors.py              # Per-modality MLP projectors & missing token embeddings
+│   └── cross_attention_fusion.py  # 4-layer Cross-Attention Transformer & low-rank head
+│
+├── brain/
+│   ├── subject_layers.py          # FiLM-style LightweightSubjectHead & ROIHead
+│   ├── losses.py                  # Composite MSE + Pearson correlation loss
+│   └── metrics.py                 # Streaming OnlinePearsonCorr & per-subject metrics
+│
+├── data/
+│   ├── dataset.py                 # PyTorch Dataset & Lightning DataModule
+│   └── preprocessing.py           # fMRI z-scoring, NIfTI slicing & synthetic generator
+│
+├── training/
+│   ├── pl_module.py               # PyTorch Lightning training wrapper
+│   └── train.py                   # Training CLI with OneCycleLR & early stopping
+│
+├── evaluation/
+│   ├── benchmark.py               # VRAM profiler & latency benchmark suite
+│   ├── validate_fmri.py           # Empirical & synthetic fMRI validation runner
+│   ├── inference.py               # High-level inference engine
+│   └── timeline_analyzer.py       # Second-by-second timeline engagement analyzer
+│
+├── ui/
+│   └── app.py                     # Streamlit interactive web application
+│
+├── api/
+│   └── server.py                  # FastAPI REST API server
+│
+├── mcp/
+│   └── server.py                  # Model Context Protocol (MCP) JSON-RPC stdio server
+│
+├── scripts/
+│   ├── setup_wsl.sh               # WSL2 Ubuntu automated setup script
+│   ├── download_algonauts.sh      # Algonauts & OpenNeuro dataset download pointers
+│   ├── extract_features.py        # Feature pre-extraction script
+│   └── run_script_inference.py    # Quick inference runner
+│
+├── tests/
+│   └── test_pipeline.py           # Comprehensive unit test suite (9/9 passing)
+│
+└── TRIBE_original/                # Official cloned Meta TRIBE v2 repository
+```
 
 ---
 
-### B. FastAPI REST API Server
-Start the high-performance REST API:
+## 14. Troubleshooting FAQ
 
-```bash
-python -m tribe_local.api.server
-# Or using uvicorn:
-uvicorn tribe_local.api.server:app --host 0.0.0.0 --port 8000
-```
-Interactive Swagger / OpenAPI documentation is available at `http://localhost:8000/docs`.
-
-**Key Endpoints:**
-- `GET /api/v1/health`: GPU and service status check.
-- `POST /api/v1/predict`: Predict brain BOLD response from text, video, or audio.
-- `POST /api/v1/engagement`: Get second-by-second timeline engagement curves, top peaks, and drop-off risks.
-- `POST /api/v1/generate-script`: Generate viral scripts via DeepSeek and immediately compute retention metrics.
+| Problem | Cause | Recommended Solution |
+|:---|:---|:---|
+| **`CUDA out of memory (OOM)`** | Batch size too large or activations un-cached | Ensure `--batch-size 1` and `--fp16` are used. Use `extract_features.py` to cache features to disk ahead of time. |
+| **`No module named 'tribe_local'`** | PYTHONPATH does not include the project root | Run commands from the `TRibev2` directory or set `PYTHONPATH=.` in your terminal. |
+| **`DeepSeek API 404 / Rate Limit`** | Endpoint difference or API quota | The text encoder automatically falls back to local SentenceTransformers `all-MiniLM-L6-v2`. |
+| **`nvidia-smi not detected in WSL2`** | Missing Windows NVIDIA display driver | Install the latest NVIDIA GeForce Game Ready Driver on Windows. Do not install Linux drivers inside WSL2. |
+| **`Port 8501 or 8000 already in use`** | A previously running server process is open | Pass a custom port: `streamlit run ui/app.py --server.port 8502` or `uvicorn api.server:app --port 8001`. |
 
 ---
 
-### C. Model Context Protocol (MCP) Server
-Integrate TRIBE-local directly with Claude Desktop, Antigravity, Cursor, or any LLM agent:
+## 15. Citations
 
-```bash
-python -m tribe_local.mcp.server
-```
-
-**Add to Claude Desktop (`claude_desktop_config.json`):**
-```json
-{
-  "mcpServers": {
-    "tribe-local": {
-      "command": "python",
-      "args": ["-m", "tribe_local.mcp.server"],
-      "cwd": "D:\\sakthivel workspace\\Workspace\\CRM"
-    }
-  }
+```bibtex
+@article{michael2026tribe,
+  title={A Foundation Model of Vision, Audition, and Language for In-Silico Neuroscience},
+  author={Michael, et al.},
+  journal={arXiv preprint arXiv:2605.04326},
+  year={2026},
+  publisher={Meta AI}
 }
 ```
-
-**Exposed MCP Tools:**
-1. `tribe_predict_brain`: Predict human cortical BOLD responses from multimodal stimuli.
-2. `tribe_analyze_engagement`: Calculate timeline engagement curves, hook strength, and drop-off risks.
-3. `tribe_generate_viral_script`: Generate scripts with DeepSeek and return engagement analytics.
-4. `tribe_get_system_status`: Inspect GPU memory, VRAM headroom, and encoder health.
-
----
-
-## 8. Supported Datasets
-
-TRIBE-local supports standard fMRI datasets used in the original TRIBE v2 paper:
-1. **Algonauts 2025 (Courtois NeuroMod)**: Naturalistic movie and TV sitcom viewing fMRI (4 subjects, TR=1.49s).
-2. **Lahner 2024 (BOLD Moments)**: 10 subjects watching short 3-second video clips (OpenNeuro `ds004873`).
-3. **Lebel 2023 (Natural Language)**: 8 subjects listening to spoken stories (OpenNeuro `ds003020`).
-4. **Wen 2017**: Naturalistic video viewing fMRI (3 subjects, TR=2.0s).
-
-Run `scripts/download_algonauts.sh` for download pointers.
-
----
-
-## 8. Troubleshooting
-
-| Issue | Cause | Solution |
-|:---|:---|:---|
-| **CUDA out of memory (OOM)** | Large batch size or unclosed memory cache | Ensure `--batch-size 1` and `--fp16` are active. Pre-extract features with `extract_features.py` to keep vision/audio encoders off GPU during training. |
-| **`nvidia-smi` not found in WSL2** | Missing NVIDIA Windows display driver | Update to the latest NVIDIA GeForce Game Ready or Studio Driver on Windows. Do **not** install Linux drivers inside WSL2. |
-| **DeepSeek API timeout / rate limit** | Network latency or API quota exhaustion | The text encoder automatically falls back to local `all-MiniLM-L6-v2`. Alternatively, pre-extract text features using `extract_features.py`. |
-| **Missing audio libraries (`sndfile`)** | System dependency missing | Run `sudo apt-get install -y libsndfile1 ffmpeg`. |
-
----
-
-## 9. License & Citations
-
-- **Original TRIBE v2 Paper:**
-  > Michael et al., *"A Foundation Model of Vision, Audition, and Language for In-Silico Neuroscience"*, arXiv:2605.04326 (Meta AI, 2026).
-- **Code License:** Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0).
