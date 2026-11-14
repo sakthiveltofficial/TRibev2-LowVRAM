@@ -1,0 +1,116 @@
+# ==============================================================================
+# TRIBE-local Configuration — RTX 5060 Ti (8GB VRAM) Optimized
+# Target Environment: Windows 11 + WSL2 Ubuntu 24.04 (32GB RAM)
+# ==============================================================================
+
+project_name: tribe_local
+seed: 33  # Matches original TRIBE v2 seed
+
+# ------------------------------------------------------------------------------
+# Hardware & Execution Environment
+# ------------------------------------------------------------------------------
+hardware:
+  accelerator: gpu
+  devices: 1
+  precision: "16-mixed"        # FP16 mixed precision for 8GB VRAM budget
+  batch_size: 1               # Batch size 1 minimizes peak activation footprint
+  num_workers: 2              # DataLoader worker processes
+  pin_memory: true
+  cpu_offload_encoders: true  # Keep frozen feature extractors on CPU
+
+# ------------------------------------------------------------------------------
+# Data & Stimulus Parameters
+# ------------------------------------------------------------------------------
+data:
+  data_root: "data/"
+  cache_dir: "~/.tribe_cache"
+  frequency: 2                # Feature extraction frequency (2 Hz, matches TRIBE v2)
+  duration_trs: 100           # Segment length in TRs (matches TRIBE v2 default)
+  overlap_trs_train: 0
+  overlap_trs_val: 0
+  val_ratio: 0.1
+  hrf_offset_secs: 5          # Hemodynamic response lag correction (matches TRIBE v2)
+  fsaverage_mesh: "fsaverage5" # Surface mesh: 2 × 10,242 = 20,484 vertices
+
+# ------------------------------------------------------------------------------
+# Pretrained Encoders (Frozen Components)
+# ------------------------------------------------------------------------------
+encoders:
+  video:
+    # Replaces V-JEPA 2 ViT-G (1408 dim)
+    model_name: "MCG-NJU/videomae-small"
+    output_dim: 384
+    frozen: true
+    fp16: true
+    n_frames: 16
+    fps_sample: 2.0
+
+  audio:
+    # Replaces Wav2Vec-BERT 2.0 (1024 dim)
+    model_name: "MIT/ast-finetuned-audioset-10-10-0.4593"
+    output_dim: 768
+    frozen: true
+    fp16: true
+    n_mels: 128
+    sample_rate: 16000
+
+  text:
+    # Replaces LLaMA 3.2-3B (3072 dim)
+    model_name: "deepseek-embedding"
+    api_base: "https://api.deepseek.com"
+    output_dim: 1536
+    fallback_model: "all-MiniLM-L6-v2"
+    fallback_dim: 384
+    frozen: true  # API-driven, zero gradient parameters
+
+# ------------------------------------------------------------------------------
+# Feature Fusion (Lightweight Custom Transformer + Cross-Attention)
+# ------------------------------------------------------------------------------
+fusion:
+  hidden: 512                  # Internal hidden dimension (vs TRIBE v2's 1152)
+  low_rank: 1024               # Bottleneck dimension r (vs TRIBE v2's 2048)
+  n_transformer_layers: 4      # Transformer depth (vs TRIBE v2's 8)
+  n_heads: 8                   # Multi-head attention heads
+  dropout: 0.1
+  modality_dropout: 0.3        # Randomly zeroes out modalities during training (matches TRIBE v2)
+  max_seq_len: 1024            # Positional encoding buffer size
+
+# ------------------------------------------------------------------------------
+# Brain Prediction Head
+# ------------------------------------------------------------------------------
+brain_head:
+  mode: "voxel"                # "voxel" (20484 cortical vertices) or "roi" (360 ROIs)
+  n_vertices: 20484            # Dual-hemisphere fsaverage5 surface
+  n_rois: 360                  # HCP-MMP1 parcellation count
+  n_subjects: 25               # Supported subject slots
+  target_trs: 100              # Output temporal TR dimension
+  subject_dropout: 0.1         # Regularizes subject-specific style offsets (matches TRIBE v2)
+  low_rank_dim: 1024
+
+# ------------------------------------------------------------------------------
+# Loss Function & Optimization
+# ------------------------------------------------------------------------------
+loss:
+  alpha: 0.8                   # Composite loss: 0.8 * MSE + 0.2 * (1 - Pearson_r)
+
+optimizer:
+  name: Adam
+  lr: 1.0e-4                   # Matches TRIBE v2 learning rate
+  weight_decay: 0.0
+
+scheduler:
+  name: OneCycleLR
+  max_lr: 1.0e-4
+  pct_start: 0.1               # Matches TRIBE v2 warmup schedule
+
+# ------------------------------------------------------------------------------
+# Training Hyperparameters
+# ------------------------------------------------------------------------------
+training:
+  max_epochs: 15               # Matches TRIBE v2 default
+  early_stopping_patience: 5
+  monitor: "val/pearson"       # Primary selection metric
+  checkpoint_dir: "checkpoints/"
+  log_dir: "logs/"
+  gradient_clip_val: 1.0
+  gradient_checkpointing: true

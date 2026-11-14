@@ -1,0 +1,92 @@
+# ==============================================================================
+# TRIBE-local Configuration — ROI-Mode (Ultra-lightweight 360 ROIs)
+# Target Environment: RTX 5060 Ti (8GB VRAM) or CPU
+# ==============================================================================
+
+project_name: tribe_local_roi
+seed: 33
+
+hardware:
+  accelerator: gpu
+  devices: 1
+  precision: "16-mixed"
+  batch_size: 2               # Can use batch_size 2 in ROI mode due to small target dim
+  num_workers: 2
+  pin_memory: true
+  cpu_offload_encoders: true
+
+data:
+  data_root: "data/"
+  cache_dir: "~/.tribe_cache"
+  frequency: 2
+  duration_trs: 100
+  overlap_trs_train: 0
+  overlap_trs_val: 0
+  val_ratio: 0.1
+  hrf_offset_secs: 5
+  fsaverage_mesh: "fsaverage5"
+
+encoders:
+  video:
+    model_name: "MCG-NJU/videomae-small"
+    output_dim: 384
+    frozen: true
+    fp16: true
+    n_frames: 16
+    fps_sample: 2.0
+
+  audio:
+    model_name: "MIT/ast-finetuned-audioset-10-10-0.4593"
+    output_dim: 768
+    frozen: true
+    fp16: true
+    n_mels: 128
+    sample_rate: 16000
+
+  text:
+    model_name: "deepseek-embedding"
+    api_base: "https://api.deepseek.com"
+    output_dim: 1536
+    fallback_model: "all-MiniLM-L6-v2"
+    fallback_dim: 384
+    frozen: true
+
+fusion:
+  hidden: 512
+  low_rank: 1024
+  n_transformer_layers: 4
+  n_heads: 8
+  dropout: 0.1
+  modality_dropout: 0.3
+  max_seq_len: 1024
+
+brain_head:
+  mode: "roi"                  # ROI mode: outputs (B, 360, 100)
+  n_vertices: 20484
+  n_rois: 360                  # HCP-MMP1 360 cortical areas
+  n_subjects: 25
+  target_trs: 100
+  subject_dropout: 0.1
+  low_rank_dim: 1024
+
+loss:
+  alpha: 0.8
+
+optimizer:
+  name: Adam
+  lr: 1.0e-4
+  weight_decay: 0.0
+
+scheduler:
+  name: OneCycleLR
+  max_lr: 1.0e-4
+  pct_start: 0.1
+
+training:
+  max_epochs: 15
+  early_stopping_patience: 5
+  monitor: "val/pearson"
+  checkpoint_dir: "checkpoints_roi/"
+  log_dir: "logs_roi/"
+  gradient_clip_val: 1.0
+  gradient_checkpointing: true

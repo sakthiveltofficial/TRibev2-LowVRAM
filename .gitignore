@@ -1,0 +1,73 @@
+# ==============================================================================
+# TRIBE-local Git Ignore Configuration
+# ==============================================================================
+
+# Secrets and environment credentials
+.env
+.env.local
+*.secret
+*.pem
+
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Large checkpoints and trained weights
+checkpoints/
+checkpoints_roi/
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.h5
+*.hdf5
+*.safetensors
+
+# Neuroimaging data & caches
+data/
+*.nii
+*.nii.gz
+.tribe_cache/
+~/.tribe_cache/
+
+# Experiment logs and profiling
+logs/
+logs_roi/
+wandb/
+.tensorboard/
+*.log
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Submodule / Original repo handling
+TRIBE_original/
+tribe_local

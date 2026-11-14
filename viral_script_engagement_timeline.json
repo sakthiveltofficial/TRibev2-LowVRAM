@@ -1,0 +1,965 @@
+{
+  "duration_secs": 55.0,
+  "mean_engagement": 58.0,
+  "hook_score_0_3s": 43.3,
+  "mid_retention_score": 59.7,
+  "climax_score": 61.3,
+  "loop_retention_score": 49.3,
+  "top_peaks": [
+    {
+      "time_sec": 26.1,
+      "timestamp_str": "00:26",
+      "engagement_score": 93.2,
+      "percentile": "High (Top 10%)"
+    },
+    {
+      "time_sec": 25.6,
+      "timestamp_str": "00:25",
+      "engagement_score": 93.0,
+      "percentile": "High (Top 10%)"
+    },
+    {
+      "time_sec": 25.0,
+      "timestamp_str": "00:25",
+      "engagement_score": 89.1,
+      "percentile": "High (Top 10%)"
+    }
+  ],
+  "drop_off_risks": [
+    {
+      "time_sec": 55.0,
+      "timestamp_str": "00:55",
+      "engagement_score": 19.1,
+      "risk_factor": "Drop-off Risk (Lull)"
+    },
+    {
+      "time_sec": 54.4,
+      "timestamp_str": "00:54",
+      "engagement_score": 23.8,
+      "risk_factor": "Drop-off Risk (Lull)"
+    },
+    {
+      "time_sec": 0.0,
+      "timestamp_str": "00:00",
+      "engagement_score": 27.0,
+      "risk_factor": "Drop-off Risk (Lull)"
+    }
+  ],
+  "timeline": [
+    {
+      "time_sec": 0.0,
+      "timestamp": "00:00",
+      "engagement": 27.0
+    },
+    {
+      "time_sec": 0.6,
+      "timestamp": "00:00",
+      "engagement": 38.1
+    },
+    {
+      "time_sec": 1.1,
+      "timestamp": "00:01",
+      "engagement": 48.4
+    },
+    {
+      "time_sec": 1.7,
+      "timestamp": "00:01",
+      "engagement": 49.5
+    },
+    {
+      "time_sec": 2.2,
+      "timestamp": "00:02",
+      "engagement": 53.6
+    },
+    {
+      "time_sec": 2.8,
+      "timestamp": "00:02",
+      "engagement": 58.7
+    },
+    {
+      "time_sec": 3.3,
+      "timestamp": "00:03",
+      "engagement": 64.5
+    },
+    {
+      "time_sec": 3.9,
+      "timestamp": "00:03",
+      "engagement": 71.6
+    },
+    {
+      "time_sec": 4.4,
+      "timestamp": "00:04",
+      "engagement": 67.5
+    },
+    {
+      "time_sec": 5.0,
+      "timestamp": "00:05",
+      "engagement": 66.9
+    },
+    {
+      "time_sec": 5.6,
+      "timestamp": "00:05",
+      "engagement": 67.5
+    },
+    {
+      "time_sec": 6.1,
+      "timestamp": "00:06",
+      "engagement": 59.3
+    },
+    {
+      "time_sec": 6.7,
+      "timestamp": "00:06",
+      "engagement": 51.4
+    },
+    {
+      "time_sec": 7.2,
+      "timestamp": "00:07",
+      "engagement": 53.3
+    },
+    {
+      "time_sec": 7.8,
+      "timestamp": "00:07",
+      "engagement": 54.2
+    },
+    {
+      "time_sec": 8.3,
+      "timestamp": "00:08",
+      "engagement": 49.0
+    },
+    {
+      "time_sec": 8.9,
+      "timestamp": "00:08",
+      "engagement": 47.9
+    },
+    {
+      "time_sec": 9.4,
+      "timestamp": "00:09",
+      "engagement": 55.0
+    },
+    {
+      "time_sec": 10.0,
+      "timestamp": "00:10",
+      "engagement": 61.0
+    },
+    {
+      "time_sec": 10.6,
+      "timestamp": "00:10",
+      "engagement": 62.4
+    },
+    {
+      "time_sec": 11.1,
+      "timestamp": "00:11",
+      "engagement": 66.6
+    },
+    {
+      "time_sec": 11.7,
+      "timestamp": "00:11",
+      "engagement": 69.6
+    },
+    {
+      "time_sec": 12.2,
+      "timestamp": "00:12",
+      "engagement": 63.4
+    },
+    {
+      "time_sec": 12.8,
+      "timestamp": "00:12",
+      "engagement": 65.9
+    },
+    {
+      "time_sec": 13.3,
+      "timestamp": "00:13",
+      "engagement": 69.1
+    },
+    {
+      "time_sec": 13.9,
+      "timestamp": "00:13",
+      "engagement": 64.2
+    },
+    {
+      "time_sec": 14.4,
+      "timestamp": "00:14",
+      "engagement": 56.0
+    },
+    {
+      "time_sec": 15.0,
+      "timestamp": "00:15",
+      "engagement": 49.7
+    },
+    {
+      "time_sec": 15.6,
+      "timestamp": "00:15",
+      "engagement": 42.7
+    },
+    {
+      "time_sec": 16.1,
+      "timestamp": "00:16",
+      "engagement": 36.4
+    },
+    {
+      "time_sec": 16.7,
+      "timestamp": "00:16",
+      "engagement": 36.2
+    },
+    {
+      "time_sec": 17.2,
+      "timestamp": "00:17",
+      "engagement": 47.7
+    },
+    {
+      "time_sec": 17.8,
+      "timestamp": "00:17",
+      "engagement": 51.5
+    },
+    {
+      "time_sec": 18.3,
+      "timestamp": "00:18",
+      "engagement": 46.5
+    },
+    {
+      "time_sec": 18.9,
+      "timestamp": "00:18",
+      "engagement": 48.7
+    },
+    {
+      "time_sec": 19.4,
+      "timestamp": "00:19",
+      "engagement": 55.5
+    },
+    {
+      "time_sec": 20.0,
+      "timestamp": "00:20",
+      "engagement": 50.3
+    },
+    {
+      "time_sec": 20.6,
+      "timestamp": "00:20",
+      "engagement": 53.7
+    },
+    {
+      "time_sec": 21.1,
+      "timestamp": "00:21",
+      "engagement": 59.2
+    },
+    {
+      "time_sec": 21.7,
+      "timestamp": "00:21",
+      "engagement": 56.2
+    },
+    {
+      "time_sec": 22.2,
+      "timestamp": "00:22",
+      "engagement": 52.6
+    },
+    {
+      "time_sec": 22.8,
+      "timestamp": "00:22",
+      "engagement": 58.4
+    },
+    {
+      "time_sec": 23.3,
+      "timestamp": "00:23",
+      "engagement": 62.4
+    },
+    {
+      "time_sec": 23.9,
+      "timestamp": "00:23",
+      "engagement": 69.7
+    },
+    {
+      "time_sec": 24.4,
+      "timestamp": "00:24",
+      "engagement": 80.3
+    },
+    {
+      "time_sec": 25.0,
+      "timestamp": "00:25",
+      "engagement": 89.1
+    },
+    {
+      "time_sec": 25.6,
+      "timestamp": "00:25",
+      "engagement": 93.0
+    },
+    {
+      "time_sec": 26.1,
+      "timestamp": "00:26",
+      "engagement": 93.2
+    },
+    {
+      "time_sec": 26.7,
+      "timestamp": "00:26",
+      "engagement": 84.0
+    },
+    {
+      "time_sec": 27.2,
+      "timestamp": "00:27",
+      "engagement": 76.1
+    },
+    {
+      "time_sec": 27.8,
+      "timestamp": "00:27",
+      "engagement": 63.4
+    },
+    {
+      "time_sec": 28.3,
+      "timestamp": "00:28",
+      "engagement": 52.6
+    },
+    {
+      "time_sec": 28.9,
+      "timestamp": "00:28",
+      "engagement": 49.3
+    },
+    {
+      "time_sec": 29.4,
+      "timestamp": "00:29",
+      "engagement": 51.7
+    },
+    {
+      "time_sec": 30.0,
+      "timestamp": "00:30",
+      "engagement": 57.9
+    },
+    {
+      "time_sec": 30.6,
+      "timestamp": "00:30",
+      "engagement": 68.3
+    },
+    {
+      "time_sec": 31.1,
+      "timestamp": "00:31",
+      "engagement": 76.2
+    },
+    {
+      "time_sec": 31.7,
+      "timestamp": "00:31",
+      "engagement": 82.3
+    },
+    {
+      "time_sec": 32.2,
+      "timestamp": "00:32",
+      "engagement": 81.0
+    },
+    {
+      "time_sec": 32.8,
+      "timestamp": "00:32",
+      "engagement": 70.9
+    },
+    {
+      "time_sec": 33.3,
+      "timestamp": "00:33",
+      "engagement": 60.7
+    },
+    {
+      "time_sec": 33.9,
+      "timestamp": "00:33",
+      "engagement": 51.4
+    },
+    {
+      "time_sec": 34.4,
+      "timestamp": "00:34",
+      "engagement": 43.2
+    },
+    {
+      "time_sec": 35.0,
+      "timestamp": "00:35",
+      "engagement": 41.1
+    },
+    {
+      "time_sec": 35.6,
+      "timestamp": "00:35",
+      "engagement": 46.0
+    },
+    {
+      "time_sec": 36.1,
+      "timestamp": "00:36",
+      "engagement": 51.1
+    },
+    {
+      "time_sec": 36.7,
+      "timestamp": "00:36",
+      "engagement": 51.9
+    },
+    {
+      "time_sec": 37.2,
+      "timestamp": "00:37",
+      "engagement": 41.9
+    },
+    {
+      "time_sec": 37.8,
+      "timestamp": "00:37",
+      "engagement": 40.5
+    },
+    {
+      "time_sec": 38.3,
+      "timestamp": "00:38",
+      "engagement": 41.2
+    },
+    {
+      "time_sec": 38.9,
+      "timestamp": "00:38",
+      "engagement": 39.7
+    },
+    {
+      "time_sec": 39.4,
+      "timestamp": "00:39",
+      "engagement": 42.0
+    },
+    {
+      "time_sec": 40.0,
+      "timestamp": "00:40",
+      "engagement": 56.1
+    },
+    {
+      "time_sec": 40.6,
+      "timestamp": "00:40",
+      "engagement": 61.2
+    },
+    {
+      "time_sec": 41.1,
+      "timestamp": "00:41",
+      "engagement": 57.9
+    },
+    {
+      "time_sec": 41.7,
+      "timestamp": "00:41",
+      "engagement": 59.4
+    },
+    {
+      "time_sec": 42.2,
+      "timestamp": "00:42",
+      "engagement": 64.8
+    },
+    {
+      "time_sec": 42.8,
+      "timestamp": "00:42",
+      "engagement": 62.6
+    },
+    {
+      "time_sec": 43.3,
+      "timestamp": "00:43",
+      "engagement": 59.3
+    },
+    {
+      "time_sec": 43.9,
+      "timestamp": "00:43",
+      "engagement": 59.1
+    },
+    {
+      "time_sec": 44.4,
+      "timestamp": "00:44",
+      "engagement": 57.0
+    },
+    {
+      "time_sec": 45.0,
+      "timestamp": "00:45",
+      "engagement": 58.2
+    },
+    {
+      "time_sec": 45.6,
+      "timestamp": "00:45",
+      "engagement": 62.8
+    },
+    {
+      "time_sec": 46.1,
+      "timestamp": "00:46",
+      "engagement": 71.5
+    },
+    {
+      "time_sec": 46.7,
+      "timestamp": "00:46",
+      "engagement": 75.7
+    },
+    {
+      "time_sec": 47.2,
+      "timestamp": "00:47",
+      "engagement": 71.9
+    },
+    {
+      "time_sec": 47.8,
+      "timestamp": "00:47",
+      "engagement": 68.4
+    },
+    {
+      "time_sec": 48.3,
+      "timestamp": "00:48",
+      "engagement": 69.4
+    },
+    {
+      "time_sec": 48.9,
+      "timestamp": "00:48",
+      "engagement": 64.0
+    },
+    {
+      "time_sec": 49.4,
+      "timestamp": "00:49",
+      "engagement": 64.3
+    },
+    {
+      "time_sec": 50.0,
+      "timestamp": "00:50",
+      "engagement": 74.4
+    },
+    {
+      "time_sec": 50.6,
+      "timestamp": "00:50",
+      "engagement": 76.1
+    },
+    {
+      "time_sec": 51.1,
+      "timestamp": "00:51",
+      "engagement": 70.6
+    },
+    {
+      "time_sec": 51.7,
+      "timestamp": "00:51",
+      "engagement": 62.8
+    },
+    {
+      "time_sec": 52.2,
+      "timestamp": "00:52",
+      "engagement": 53.3
+    },
+    {
+      "time_sec": 52.8,
+      "timestamp": "00:52",
+      "engagement": 45.8
+    },
+    {
+      "time_sec": 53.3,
+      "timestamp": "00:53",
+      "engagement": 38.0
+    },
+    {
+      "time_sec": 53.9,
+      "timestamp": "00:53",
+      "engagement": 29.4
+    },
+    {
+      "time_sec": 54.4,
+      "timestamp": "00:54",
+      "engagement": 23.8
+    },
+    {
+      "time_sec": 55.0,
+      "timestamp": "00:55",
+      "engagement": 19.1
+    }
+  ],
+  "network_breakdown": {
+    "Attention_Curiosity": [
+      41.16,
+      13.86,
+      21.34,
+      40.92,
+      37.1,
+      56.94,
+      67.21,
+      83.61,
+      100.0,
+      88.95,
+      52.47,
+      54.41,
+      56.5,
+      22.47,
+      34.34,
+      56.83,
+      35.48,
+      52.87,
+      55.24,
+      34.15,
+      60.53,
+      67.35,
+      49.34,
+      32.73,
+      38.15,
+      46.9,
+      65.93,
+      19.03,
+      12.27,
+      40.43,
+      34.35,
+      47.06,
+      60.74,
+      39.49,
+      16.09,
+      58.46,
+      66.47,
+      53.98,
+      62.25,
+      80.31,
+      79.67,
+      29.22,
+      53.95,
+      64.87,
+      62.7,
+      60.79,
+      66.4,
+      76.05,
+      85.21,
+      57.42,
+      40.72,
+      25.51,
+      48.09,
+      59.34,
+      77.69,
+      67.22,
+      24.17,
+      24.37,
+      33.83,
+      46.91,
+      26.34,
+      2.93,
+      29.41,
+      34.73,
+      65.34,
+      78.53,
+      43.28,
+      4.28,
+      22.26,
+      51.47,
+      60.58,
+      71.11,
+      70.41,
+      61.75,
+      74.54,
+      48.8,
+      20.93,
+      11.34,
+      45.28,
+      50.58,
+      57.02,
+      63.17,
+      37.48,
+      51.07,
+      76.71,
+      59.85,
+      5.53,
+      26.89,
+      57.73,
+      45.65,
+      39.06,
+      57.82,
+      70.91,
+      55.42,
+      71.44,
+      37.95,
+      38.63,
+      31.22,
+      21.29,
+      0.0
+    ],
+    "Language_Comprehension": [
+      33.59,
+      51.79,
+      53.82,
+      61.35,
+      30.23,
+      56.51,
+      67.14,
+      54.75,
+      21.21,
+      9.43,
+      6.1,
+      11.54,
+      44.16,
+      61.16,
+      37.66,
+      9.53,
+      26.3,
+      18.16,
+      23.5,
+      37.44,
+      21.83,
+      13.31,
+      37.56,
+      36.53,
+      14.94,
+      6.96,
+      9.35,
+      20.73,
+      20.92,
+      35.6,
+      33.89,
+      30.08,
+      45.72,
+      63.83,
+      34.47,
+      24.59,
+      26.58,
+      14.24,
+      23.42,
+      50.89,
+      67.9,
+      53.01,
+      39.27,
+      33.22,
+      23.18,
+      14.68,
+      25.46,
+      42.46,
+      37.26,
+      45.41,
+      38.31,
+      0.0,
+      24.26,
+      41.83,
+      9.3,
+      38.51,
+      34.48,
+      24.62,
+      36.52,
+      29.4,
+      31.22,
+      75.42,
+      56.45,
+      29.2,
+      32.64,
+      16.11,
+      40.54,
+      77.96,
+      51.88,
+      63.29,
+      100.0,
+      65.09,
+      32.2,
+      34.08,
+      50.07,
+      41.31,
+      34.14,
+      53.25,
+      42.55,
+      22.69,
+      57.02,
+      54.68,
+      24.42,
+      20.75,
+      42.77,
+      52.86,
+      30.25,
+      25.54,
+      36.74,
+      55.45,
+      5.97,
+      24.99,
+      47.22,
+      22.24,
+      15.65,
+      26.06,
+      48.98,
+      24.21,
+      20.23,
+      46.34
+    ],
+    "Visual_Salience": [
+      23.33,
+      55.08,
+      52.81,
+      19.51,
+      46.82,
+      32.63,
+      36.61,
+      48.9,
+      28.65,
+      54.5,
+      58.03,
+      72.65,
+      34.25,
+      36.11,
+      58.62,
+      0.0,
+      3.89,
+      19.64,
+      37.79,
+      84.25,
+      56.4,
+      54.74,
+      100.0,
+      65.58,
+      36.0,
+      47.67,
+      33.14,
+      39.52,
+      20.3,
+      12.5,
+      33.24,
+      8.29,
+      7.88,
+      62.45,
+      6.35,
+      47.66,
+      43.28,
+      35.7,
+      51.67,
+      55.89,
+      60.5,
+      48.45,
+      16.6,
+      0.27,
+      6.42,
+      45.13,
+      40.6,
+      55.97,
+      60.93,
+      57.21,
+      16.46,
+      72.34,
+      63.9,
+      39.47,
+      57.27,
+      66.01,
+      73.44,
+      43.53,
+      43.94,
+      80.39,
+      54.12,
+      61.84,
+      88.43,
+      65.5,
+      41.06,
+      47.59,
+      94.59,
+      46.79,
+      54.4,
+      36.09,
+      28.24,
+      29.81,
+      7.25,
+      24.44,
+      40.48,
+      64.67,
+      41.47,
+      42.74,
+      75.78,
+      49.04,
+      53.86,
+      70.83,
+      39.92,
+      71.98,
+      68.62,
+      51.32,
+      38.26,
+      19.56,
+      3.02,
+      16.07,
+      30.93,
+      47.34,
+      68.53,
+      62.5,
+      52.49,
+      29.89,
+      52.17,
+      42.45,
+      49.63,
+      76.9
+    ],
+    "Auditory_Emotion": [
+      39.55,
+      26.3,
+      26.87,
+      2.22,
+      29.73,
+      10.42,
+      33.55,
+      21.18,
+      20.32,
+      66.49,
+      50.1,
+      29.31,
+      32.53,
+      35.24,
+      57.51,
+      45.62,
+      28.62,
+      14.18,
+      47.94,
+      100.0,
+      38.0,
+      19.35,
+      40.23,
+      36.83,
+      49.63,
+      67.55,
+      69.74,
+      34.57,
+      4.55,
+      15.79,
+      49.61,
+      53.92,
+      48.93,
+      50.25,
+      48.29,
+      48.68,
+      72.87,
+      66.93,
+      41.3,
+      48.81,
+      56.78,
+      50.34,
+      50.29,
+      24.98,
+      58.89,
+      91.77,
+      60.57,
+      32.6,
+      37.24,
+      46.57,
+      18.6,
+      27.03,
+      29.57,
+      33.76,
+      22.47,
+      17.33,
+      57.82,
+      53.54,
+      51.92,
+      55.72,
+      33.74,
+      6.0,
+      31.47,
+      47.07,
+      32.27,
+      11.24,
+      34.33,
+      41.36,
+      23.94,
+      0.0,
+      14.98,
+      32.97,
+      11.13,
+      22.36,
+      48.78,
+      66.58,
+      40.24,
+      46.15,
+      63.79,
+      54.97,
+      48.38,
+      39.89,
+      18.89,
+      29.86,
+      50.89,
+      67.36,
+      62.72,
+      27.89,
+      31.72,
+      67.34,
+      60.3,
+      57.21,
+      89.71,
+      99.7,
+      42.32,
+      32.16,
+      18.83,
+      31.38,
+      35.15,
+      33.89
+    ]
+  },
+  "model_latency_ms": 160.08,
+  "target_shape": [
+    360,
+    100
+  ]
+}

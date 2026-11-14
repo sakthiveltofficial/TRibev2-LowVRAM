@@ -1,0 +1,59 @@
+{
+  "mean_pearson": -0.0037,
+  "median_pearson": -0.0125,
+  "mean_r2": -0.0266,
+  "top1_retrieval_acc": 0.1,
+  "per_subject": {
+    "subj_0_mean_pearson": -0.003475286765024066,
+    "subj_1_mean_pearson": -0.003854768117889762
+  },
+  "n_samples": 10,
+  "n_vertices": 20484,
+  "n_trs": 100,
+  "hcp_roi_summary": {
+    "n_rois": 360,
+    "roi_mean_pearson": -0.0043,
+    "top_10_rois": [
+      {
+        "roi_id": 306,
+        "mean_pearson": 0.1906
+      },
+      {
+        "roi_id": 272,
+        "mean_pearson": 0.189
+      },
+      {
+        "roi_id": 59,
+        "mean_pearson": 0.1794
+      },
+      {
+        "roi_id": 9,
+        "mean_pearson": 0.1771
+      },
+      {
+        "roi_id": 179,
+        "mean_pearson": 0.1736
+      },
+      {
+        "roi_id": 140,
+        "mean_pearson": 0.1643
+      },
+      {
+        "roi_id": 148,
+        "mean_pearson": 0.1558
+      },
+      {
+        "roi_id": 313,
+        "mean_pearson": 0.1492
+      },
+      {
+        "roi_id": 167,
+        "mean_pearson": 0.149
+      },
+      {
+        "roi_id": 82,
+        "mean_pearson": 0.1432
+      }
+    ]
+  }
+}
